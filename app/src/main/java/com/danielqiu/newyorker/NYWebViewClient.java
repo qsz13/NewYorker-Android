@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
+import android.webkit.JsResult;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -49,10 +51,7 @@ public class NYWebViewClient extends WebViewClient {
         return new WebResourceResponse("","",null);
     }
 
-    @Override
-    public void onPageFinished(WebView view, String url) {
-        String javascript="javascript: $( \".nav-links\" ).append('<li class=\"menu-item\"><a>Favourite</a></li>')";
-        view.loadUrl(javascript);
-    }
+
+
 
 }
