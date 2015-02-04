@@ -11,5 +11,9 @@
         android:title="@string/share"
         android:onClick="onContextualMenuItemClicked"
         />
+    <item android:id="@+id/night_mode"
+        android:title="@string/night_mode"
+        android:onClick="onContextualMenuItemClicked"
+        />
 
 </menu>

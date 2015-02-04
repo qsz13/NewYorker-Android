@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import org.apache.http.Header;
@@ -25,7 +26,7 @@ public class MainActivity extends FragmentActivity {
     private WebView mWebView;
     private ActionMode mActionMode = null;
     private NYWebChromeClient mWebChromeClient;
-
+    private Boolean nightMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class MainActivity extends FragmentActivity {
         mWebChromeClient = new NYWebChromeClient();
         mWebView.setWebChromeClient(mWebChromeClient);
         mWebView.loadUrl("http://www.newyorker.com/");
+
     }
 
     @Override
@@ -63,7 +65,6 @@ public class MainActivity extends FragmentActivity {
             // Inflate your own menu items
             mode.getMenuInflater().inflate(R.menu.context_menu, menu);
         }
-
         super.onActionModeStarted(mode);
 
     }
@@ -84,6 +85,9 @@ public class MainActivity extends FragmentActivity {
             case R.id.definition:
                 getDefinition();
                 break;
+            case R.id.night_mode:
+                switchMode(item);
+                break;
             default:
                 // ...
                 break;
@@ -94,6 +98,26 @@ public class MainActivity extends FragmentActivity {
             mActionMode.finish();
         }
     }
+
+    public void switchMode(MenuItem item)
+    {
+        if(!nightMode) {
+            mWebView.loadUrl("javascript:var css = 'html *{background-color:#222222 !important;color:#cccccc !important;}';\n" +
+                    "style = document.createElement('style');\n" +
+                    "style.type = 'text/css';\n" +
+                    "style.setAttribute('id','danielqiu');\n" +
+                    "style.appendChild(document.createTextNode(css));\n" +
+                    "document.head.appendChild(style);");
+            nightMode = true;
+            item.setTitle("Day mode");
+
+        }
+        else {
+           //TODO
+
+        }
+    }
+
 
     public void sharePage()
     {
@@ -110,7 +134,6 @@ public class MainActivity extends FragmentActivity {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void getDefinition()
     {
-//        mWebView.loadUrl("javascript:if0.textOut(document.getSelection().toString());"‌​);
         mWebView.evaluateJavascript("console.log(window.getSelection());", null);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -123,10 +146,6 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void translate(String text) {
-
-
-
-
 
         AsyncHttpClient client = new AsyncHttpClient();
         String query = "";
