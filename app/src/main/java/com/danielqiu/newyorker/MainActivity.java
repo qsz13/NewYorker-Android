@@ -2,11 +2,15 @@ package com.danielqiu.newyorker;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.ActionMode;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,8 +42,18 @@ public class MainActivity extends FragmentActivity {
         mWebView.setWebViewClient(new NYWebViewClient());
         mWebChromeClient = new NYWebChromeClient();
         mWebView.setWebChromeClient(mWebChromeClient);
-        mWebView.loadUrl("http://www.newyorker.com/");
+        Intent intent = getIntent();
+        Uri data = intent.getData();
 
+        if (data != null) {
+            String sharedText = data.toString();
+            mWebView.loadUrl(sharedText);
+        }
+        else {
+            mWebView.loadUrl("http://www.newyorker.com/");
+        }
+        Display display = getWindowManager().getDefaultDisplay();
+        Log.i("screen", String.valueOf(display.getWidth()));
     }
 
     @Override
@@ -101,6 +115,7 @@ public class MainActivity extends FragmentActivity {
 
     public void switchMode(MenuItem item)
     {
+        Display display = getWindowManager().getDefaultDisplay();
         if(!nightMode) {
             mWebView.loadUrl("javascript:var css = 'html *{background-color:#222222 !important;color:#cccccc !important;}';\n" +
                     "style = document.createElement('style');\n" +
